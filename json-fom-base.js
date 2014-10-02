@@ -13,22 +13,22 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 function JsonFOMBase(data){
     for(key in data) this[key] = data[key];
 }
-JsonFOMObject.prototype.get = function(key){
+JsonFOMBase.prototype.get = function(key){
     return this[key];
 }
-JsonFOMObject.prototype.set = function(key,value){
+JsonFOMBase.prototype.set = function(key,value){
     this[key] = value;
 }
-JsonFOMObject.prototype.getFOM = function(key){
+JsonFOMBase.prototype.getFOM = function(key){
     return this["fom"][key];
 }
-JsonFOMObject.prototype.setFOM = function(key,value){
+JsonFOMBase.prototype.setFOM = function(key,value){
     this["fom"][key] = value;
 }
-JsonFOMObject.prototype.getFOMRow = function(){
+JsonFOMBase.prototype.getFOMRow = function(){
     return this["fom"];
 }
-JsonFOMObject.prototype.toFOMSchema = function(){
+JsonFOMBase.prototype.toFOMSchema = function(){
     for(key in this.fomMap){
         var temp = this.fomMap[key];
         if(key && temp){
