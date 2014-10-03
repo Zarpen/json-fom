@@ -23,12 +23,12 @@ function JsonFOM(name,data,lang){
             if(JsonFOM.is_array(this.json_data[json_key])){
                 for(var i = 0;i < this.json_data[json_key].length;i++){
                     var json_temp = this.json_data[json_key][i];
-                    if(this[json_key]) this[json_key].push(new window[class_name](json_temp));
+                    if(json_temp && json_temp != undefined) this[json_key].push(new window[class_name](json_temp));
                 }
             }else{
                 for(json_key2 in this.json_data[json_key]){
                     var json_temp = this.json_data[json_key][json_key2];
-                    if(this[json_key]) this[json_key].push(new window[class_name](json_temp));
+                    if(json_temp && json_temp != undefined) this[json_key].push(new window[class_name](json_temp));
                 }
             }
         }
@@ -85,9 +85,11 @@ JsonFOM.prototype.getTableFOM = function(table,id){
 }
 JsonFOM.prototype.getRelatedFOM = function(table,key,value,sort){
   var result = value;
+  var rows = is_array(this.json_data[table]) ? this.json_data[table] : [this.json_data[table]];
+  
   if(JsonFOM.is_array(value)){
-        for(var i = 0;i < this[table].length;i++){
-            var obj = this[table][i];
+        for(var i = 0;i < rows.length;i++){
+            var obj = rows[i];
             for(var j = 0;j < value.length;j++){
                 if(value[j] == obj[key]){
                     if(typeof window["JsonFOM"+table] == 'function'){
@@ -98,8 +100,8 @@ JsonFOM.prototype.getRelatedFOM = function(table,key,value,sort){
         }
         if(sort && sort != undefined) result.sort(sort);
     }else{
-        for(var i = 0;i < this[table].length;i++){
-            var obj = this[table][i];
+        for(var i = 0;i < rows.length;i++){
+            var obj = rows[i];
             if(value == obj[key]){
                 if(typeof window["JsonFOM"+table] == 'function'){
                     result = [new window["JsonFOM"+table](obj)];
