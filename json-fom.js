@@ -20,7 +20,7 @@ function JsonFOM(name,data,lang){
         var class_name = "JsonFOM"+json_key;
         if(typeof window[class_name] == 'function'){
             this[json_key] = [];
-            if(this.is_array(this.json_data[json_key])){
+            if(JsonFOM.is_array(this.json_data[json_key])){
                 for(var i = 0;i < this.json_data[json_key].length;i++){
                     var json_temp = this.json_data[json_key][i];
                     if(this[json_key]) this[json_key].push(new window[class_name](json_temp));
@@ -85,7 +85,7 @@ JsonFOM.prototype.getTableFOM = function(table,id){
 }
 JsonFOM.prototype.getRelatedFOM = function(table,key,value,sort){
   var result = value;
-  if(this.is_array(value)){
+  if(JsonFOM.is_array(value)){
         for(var i = 0;i < this[table].length;i++){
             var obj = this[table][i];
             for(var j = 0;j < value.length;j++){
@@ -232,7 +232,7 @@ JsonFOM.prototype.queryFormat = function(query,prefix_table){
                                     var temp = [];
                                     var temp_rows = side_rows[table_key];
                                     for(var j = 0;j < temp_rows.length;j++){
-                                        if(this.is_array(temp_rows[j])){
+                                        if(JsonFOM.is_array(temp_rows[j])){
                                             var temp2 = from[table_key][temp_rows[j][table_key]];
                                             for(table_key_2 in temp_rows[j]){ 
                                                 if(table_key != table_key_2){
@@ -276,7 +276,7 @@ JsonFOM.prototype.queryFormat = function(query,prefix_table){
                                     var temp = [];
                                     var temp_rows = from_rows[table_key];
                                     for(var j = 0;j < temp_rows.length;j++){
-                                        if(this.is_array(temp_rows[j])){
+                                        if(JsonFOM.is_array(temp_rows[j])){
                                             var temp2 = from[table_key][temp_rows[j][table_key]];
                                             for(table_key_2 in temp_rows[j]){ 
                                                 if(table_key != table_key_2){
@@ -292,7 +292,7 @@ JsonFOM.prototype.queryFormat = function(query,prefix_table){
 
                                     temp_rows = temp_from_rows[table_key];
                                     for(var j = 0;j < temp_rows.length;j++){
-                                        if(this.is_array(temp_rows[j])){
+                                        if(JsonFOM.is_array(temp_rows[j])){
                                             var temp2 = from[table_key][temp_rows[j][table_key]];
                                             for(table_key_2 in temp_rows[j]){ 
                                                 if(table_key != table_key_2){
@@ -669,7 +669,7 @@ JsonFOM.prototype.queryFormatSide = function(from,side){
 JsonFOM.prototype.unformatQueryField = function(field){
     var result = field && field != undefined ? field : "";
     if(field){
-        if(this.is_object(field)){
+        if(JsonFOM.is_object(field)){
             result = field.getFullYear()+"-"+(sd2(field.getMonth()+1))+"-"+sd2(field.getDate())+" "+sd2(field.getHours())+":"+sd2(field.getMinutes())+":"+sd2(field.getSeconds());
         }else if(!isNaN(field)){
             result = field+"";
@@ -682,7 +682,7 @@ JsonFOM.prototype.unformatQueryField = function(field){
 JsonFOM.prototype.formatQueryField = function(field){
     var result = field && field != undefined ? field : "";
     if(field){
-        if(this.is_object(field) || !isNaN(field)) return result;
+        if(JsonFOM.is_object(field) || !isNaN(field)) return result;
         
         if(field.indexOf("'") >= 0 || field.indexOf('"') >= 0){
             var temp_field = field.replace(/["']/g, "").replace(/^\s+|\s+$/gm,'');
@@ -722,11 +722,11 @@ JsonFOM.getInstance = function(name){
 JsonFOM.setInstance = function(name,value){
     JsonFOM.jfom_instances[name] = value;
 }
-this.is_object = function(value){
+JsonFOM.is_object = function(value){
     var type = Object.prototype.toString.call(value);
     return type === '[object Object]' || type === '[object Date]';
 }
-this.is_array = function(value){
+JsonFOM.is_array = function(value){
     return Object.prototype.toString.call(value) === '[object Array]';
 }
 
